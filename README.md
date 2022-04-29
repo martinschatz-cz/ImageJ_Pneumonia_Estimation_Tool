@@ -104,7 +104,7 @@ Received: 7 April 2020 /Revised: 5 June 2020 /Accepted: 12 June 2020
 Schätz M, Rubešová O, Mareš J *et al*. Estimation of Covid-19 lungs damage based on computer tomography images analysis [version 1; peer review: awaiting peer review]. F1000Research 2022, **11**:326 (https://doi.org/10.12688/f1000research.109020.1)
 
 ```
-@article{Schtz2022,
+@article{Schatz2022,
   doi = {10.12688/f1000research.109020.1},
   url = {https://doi.org/10.12688/f1000research.109020.1},
   year = {2022},
