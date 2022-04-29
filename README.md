@@ -31,18 +31,49 @@ DICOM files are usally saved in signed 16 bit, with original HU. TIFF however ha
 Biggest limitation is human input, inter and intra variation of manual selection may lead to different results. Percentage estimation might be affected by other body cavities filled with air. CT slice depth might create a difference in percentage estimation too. Difference between 3 mm and 0.6 mm slices, with same input is: 3%.
 
 ## The tool runtime which require user inputs
-1. Select the CT lung data (TIFF or DICOM file based on the script version) - the CT sequence is opened and could be go through as a image sequence with slider or as a video with play button.
-![8bit menu](images/menu_8_bit.PNG)  
-8 bit tool version menu   
-![16bit menu](images/menu_16_bit.PNG)  
-16bit tool version menu
+<ol>
+<li>Select the CT lung data (TIFF or DICOM file based on the script version) - the CT sequence is opened and could be go through as a image sequence with slider or as a video with play button. 
 
-2. "Please find the start of lungs in stack" - the first image with lungs should be found with the slider and confirm with the "Ok" button.
-3. "Please find the end of lungs in stack" - the last image with lungs should be found with the slider and confirm with the "Ok" button.  
-The tool works with the images only in between the chosen interval of the lungs stack to minimize the computational effort.  
-4. "Setup threshold for all but body" - the whole image- exclude the body, shall be highlighted with red colour. The tool makes automatic estimation, and the user can adjust the threshold with the sliders on the histogram. Confirm with the "Ok" button. 
-5. "Setup threshold of Covid" - the covid threshold shall be highlighted with red colour. The tool makes automatic estimation, and the user can adjust the threshold with the sliders on the histogram. It is not a problem if part of the body (not lungs!) will be chosen together with Covid. The tool automatically subtracts the body threshold from the chosen Covid threshold. Confirm with the "Ok" button. 
-
+<p align="center">
+   <img src="images/menu_8_bit.PNG"/>  
+   <br>Img 1: 8 bit tool version menu</br>
+</p>
+<p align="center">
+   <img src="images/menu_16_bit.PNG"/>  
+   <br>Img 2: 16 bit tool version menu</br>
+</p>
+</li>
+<li>"Please select Window/Level" - the correct Window/Level should be configured and applied for efficient covid estimation
+<p align="center">
+   <img src="images/select_window_level.PNG"/>  
+   <br>Img 3: Window/Level cofiguration</br>
+</p>
+</li>
+<li>"Please find the start of lungs in stack" - the first image with lungs should be found with the slider and confirm with the "Ok" button.
+<p align="center">
+   <img src="images/start_of_lungs.PNG"/>  
+   <br>Img 4: Select start of lung dialog</br>
+</p>
+</li>
+<li>"Please find the end of lungs in stack" - the last image with lungs should be found with the slider and confirm with the "Ok" button. The tool works with the images only in between the chosen interval of the lungs stack to minimize the computational effort.
+<p align="center">
+   <img src="images/end_of_lungs.PNG"/>  
+   <br>Img 5: Select end of lung dialog</br>
+</p>
+</li>
+<li>"Setup threshold for all but body" - the whole image- exclude the body, shall be highlighted with red colour. The tool makes automatic estimation, and the user can adjust the threshold with the sliders on the histogram. Confirm with the "Ok" button.
+<p align="center">
+   <img src="images/all_but_body.PNG"/>  
+   <br>Img 6: Setup threshold of environment and lungs dialog</br>
+</p>
+</li> 
+<li>"Setup threshold of Covid" - the covid threshold shall be highlighted with red colour. The tool makes automatic estimation, and the user can adjust the threshold with the sliders on the histogram. It is not a problem if part of the body (not lungs!) will be chosen together with Covid. The tool automatically subtracts the body threshold from the chosen Covid threshold. Confirm with the "Ok" button.
+<p align="center">
+   <img src="images/threshold_covid.PNG"/>  
+   <br>Img 7: Setup threshold of Covid dialog</br>
+</p>
+</li> 
+</ol>
 ## Results
 After each calculation the tool is adding information to the log window. The log file is automatically saved to the CT data directory. The output lungs and covid masks are saved in TIFF format into additional folder in the CT data location.  
 
