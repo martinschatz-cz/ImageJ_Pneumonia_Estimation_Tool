@@ -32,6 +32,11 @@ Biggest limitation is human input, inter and intra variation of manual selection
 
 ## The tool runtime which require user inputs
 1. Select the CT lung data (TIFF or DICOM file based on the script version) - the CT sequence is opened and could be go through as a image sequence with slider or as a video with play button.
+![8bit menu](images/menu_8_bit.PNG)  
+8 bit tool version menu   
+![16bit menu](images/menu_16_bit.PNG)  
+16bit tool version menu
+
 2. "Please find the start of lungs in stack" - the first image with lungs should be found with the slider and confirm with the "Ok" button.
 3. "Please find the end of lungs in stack" - the last image with lungs should be found with the slider and confirm with the "Ok" button.  
 The tool works with the images only in between the chosen interval of the lungs stack to minimize the computational effort.  
