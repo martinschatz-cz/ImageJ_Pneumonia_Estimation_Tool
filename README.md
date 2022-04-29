@@ -98,6 +98,26 @@ Valeria Panebianco1 & Chiara Andreoli2 & Maria Chiara Colaiacomo2 & Maria Antone
 Maria Rosa Ciardi3 & Claudio Maria Mastroianni3 & Francesco Pugliese4 & Francesco Alessandri4 & Ombretta Turriziani5 &
 Paolo Ricci1,2 & Carlo Catalano1
 Received: 7 April 2020 /Revised: 5 June 2020 /Accepted: 12 June 2020
+
+## If you are using this software tool, please cite:
+
+Schätz M, Rubešová O, Mareš J *et al*. Estimation of Covid-19 lungs damage based on computer tomography images analysis [version 1; peer review: awaiting peer review]. F1000Research 2022, **11**:326 (https://doi.org/10.12688/f1000research.109020.1)
+
+```
+@article{Schtz2022,
+  doi = {10.12688/f1000research.109020.1},
+  url = {https://doi.org/10.12688/f1000research.109020.1},
+  year = {2022},
+  month = mar,
+  publisher = {F1000 Research Ltd},
+  volume = {11},
+  pages = {326},
+  author = {Martin Sch\"{a}tz and Olga Rube{\v{s}}ov{\'{a}} and Jan Mare{\v{s}} and David Girsa and Alan Spark},
+  title = {Estimation of Covid-19 lungs damage based on computer tomography images analysis},
+  journal = {F1000Research}
+}
+```
+
 # European Society of Radiology 2020
 European Radiology
 https://doi.org/10.1007/s00330-020-07033-y
