@@ -1,8 +1,10 @@
+[![F1000research - Software Tool](https://img.shields.io/badge/F1000research-Software_Tool-ed5d1f)](https://doi.org/10.12688/f1000research.109020.1) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5805990.svg)](https://doi.org/10.5281/zenodo.5805990)
+
 # ImageJ Pneumonia Estimation Tool
 
 Schätz M, Rubešová O, Mareš J et al. Estimation of Covid-19 lungs damage based on computer tomography images analysis [version 1; peer review: awaiting peer review]. F1000Research 2022, 11:326 (https://doi.org/10.12688/f1000research.109020.1)
 
-Zenodo: CT scans of COVID-19 patients, https://doi.org/10.5281/zenodo.5805939.13
+Zenodo: CT scans of COVID-19 patients [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5805939.svg)](https://doi.org/10.5281/zenodo.5805939)
 
 The Covid CT estimation tool is a Fiji script for semi-automatic analysis of percentage of the Covid damage in the lungs based on the computer tomography (CT) files. 
 FIJI is widely used BioImage Analysis tool - a prepared ImageJ with BioImage plugin (needed for importing various imaging formats), could be found on https://imagej.net/Fiji. The package contains examples of different biological and biomedical data and perfectly suitable for processing of medical images.
