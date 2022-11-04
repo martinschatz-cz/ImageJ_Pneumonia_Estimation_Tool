@@ -1,0 +1,519 @@
+<html><head>
+<style>
+@font-face{font-family:Helvetica, Arial;font-weight:400;}
+body{font-family:Helvetica, Arial;}
+pre{font-family:Courier New, monospace;color:#000000;padding:5px 5px;background:#eeeeee;border:1px solid #dddddd;overflow-x:auto;margin:0}
+code{font-family:Courier New, monospace;}
+p,ul,ol,table,pre,dl{margin:0 0 20px}
+h1,h2,h3,h4,h5,h6{font-family:Helvetica, Arial;color:#222;margin:0 0 20px}
+h1,h2,h3{line-height:1.1}
+h1{font-size:28px}
+h2{color:#393939}
+h3,h4,h5,h6{color:#494949}
+table{padding:5px 5px;}
+th, td{font-family:Helvetica, Arial;margin:10px 10px 10px 10px; border: 1px solid #dddddd; padding: 15px;}}
+</style>
+</head>
+<body>
+<pre><code class="language-java">//	V 0.1
+ver = &quot;p0.1&quot;
+//  update: 04.11.2022
+//	by: Martin Schätz
+//  email: schatzm@vscht.cz
+//
+// based on V 0.3clean 27.12.2021 Clean version
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+</code></pre>
+<ul>
+<li>
+<h1>General info</h1>
+</li>
+</ul>
+<pre><code class="language-java">
+print(&quot;\\Clear&quot;);
+run(&quot;Close All&quot;);
+print(&quot;Version: &quot; + ver + &quot;, last edit 04.11.2022&quot;);
+
+//Open files
+////////////////////////////
+
+
+//#@ File (label = &quot;Output directory&quot;, style = &quot;directory&quot;) output
+
+
+
+
+
+if ((bTiff &amp; bDICOM) | (bDICOM &amp; bCDICOM) | (bCDICOM &amp; bTiff)) {
+	print(&quot;\\Clear&quot;);
+	exit(&quot;Only one file type can be selected&quot;);
+}
+
+
+openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
+
+if (bTiff | bDICOM) {
+	print(&quot;uint16 used&quot;);
+	
+
+
+}
+
+if (lung){
+	width=1070; level=-340;
+	min = level - width/2;
+    max = level + width/2;
+    setMinAndMax(min, max);
+    print(&quot;Lung view, width: &quot; + width + &quot;, level: &quot;+ level);
+} 
+if (bone){
+	width=500; level=200;
+	min = level - width/2;
+    max = level + width/2;
+    setMinAndMax(min, max);
+    print(&quot;Bone view, width: &quot; + width + &quot;, level: &quot;+ level);
+}
+
+</code></pre>
+<pre>
+> Version: p0.1, last edit 04.11.2022
+> Opening: C:\01_projects\01_COVID_sw_tool\DATA\CT1_2\CT1_2_TIFF\CT1_2_TIFF0000.tif
+> uint16 used
+</pre>
+<p><a href="image_1667574287995.png"><img src="image_1667574287995.png" width="250" alt="CT1_2_TIFF0000.tif"/></a></p>
+<ul>
+<li>
+<h1>Processing</h1>
+</li>
+</ul>
+<pre><code class="language-java">
+
+// get image name
+title=getTitle();
+//////////////////////////
+
+
+start=getTime();
+if (!MMp) {
+	setBatchMode(&quot;show&quot;);
+}
+
+imgDir = input;
+getDateAndTime(year, month, dayOfWeek, dayOfMonth, hour, minute, second, msec);
+acTime=&quot;&quot;;
+acTime = &quot;&quot; + year + &quot;_&quot; + month + &quot;_&quot; + dayOfMonth + &quot;_&quot; + hour + &quot;_&quot; + minute + &quot;&quot;;
+print(acTime);
+
+dirArray=split(imgDir, File.separator());
+dirName=dirArray[dirArray.length-1];
+
+getDimensions(width, height, channels, slices, frames);
+
+</code></pre>
+<pre>
+> 2022_10_4_16_4
+</pre>
+<ul>
+<li>
+<h2>Lung masking</h2>
+</li>
+</ul>
+<pre><code class="language-java">
+//print(&quot;Image path: &quot;+replace(fileDir,title,&quot;&quot;));
+//select lung parts
+waitForUser(&quot;Lung selection&quot;, &quot;Please find start of lungs in stack&quot;);
+start=getSliceNumber();
+waitForUser(&quot;Lung selection&quot;, &quot;Please find end of lungs in stack&quot;);
+end=getSliceNumber();
+if (!MMp) {
+	setBatchMode(true);
+}
+print(&quot;Start of lungs: &quot;+start);
+print(&quot;End of lungs: &quot;+end);
+run(&quot;Duplicate...&quot;, &quot;duplicate range=&quot;+start+&quot;-&quot;+end);
+rename(&quot;orig&quot;);
+selectImage(title);
+close(title);
+selectImage(&quot;orig&quot;);
+
+// get voxel size
+getVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
+
+// get iamge location
+maskDir = imgDir+&quot;masks_&quot;+acTime+File.separator;
+if (!File.exists(maskDir))
+	File.makeDirectory(maskDir);
+	
+print(&quot;Image directory: &quot;+imgDir);
+saveAs(&quot;tiff&quot;,maskDir+replace(title,&quot;.tiff&quot;,&quot;&quot;)+&quot;_lungs_subpart&quot;);
+rename(&quot;orig&quot;);
+
+if (lung){
+	width=1070; level=-340;
+	min = level - width/2;
+    max = level + width/2;
+    setMinAndMax(min, max);
+    run(&quot;Apply LUT&quot;, &quot;stack&quot;);
+} 
+if (bone){
+	width=500; level=200;
+	min = level - width/2;
+    max = level + width/2;
+    setMinAndMax(min, max);
+    run(&quot;Apply LUT&quot;, &quot;stack&quot;);
+}
+
+// apply median filter
+run(&quot;Median...&quot;, &quot;radius=2 stack&quot;);
+selectImage(&quot;orig&quot;);
+
+// enhance contrast for better details
+//run(&quot;Enhance Contrast&quot;, &quot;saturated=0.35&quot;);
+//run(&quot;Apply LUT&quot;, &quot;stack&quot;);
+
+// duplicate stack for lung thresholding
+run(&quot;Duplicate...&quot;, &quot;duplicate&quot;);
+rename(&quot;lungs&quot;);
+
+// duplicate stack for covid thresholding
+run(&quot;Duplicate...&quot;, &quot;duplicate&quot;);
+rename(&quot;covid&quot;);
+
+//processing
+/////////////////////////////////////////////////
+//setBatchMode(false);
+selectImage(&quot;lungs&quot;);
+run(&quot;Original Scale&quot;);
+
+// set same voxel size
+setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
+
+//run(&quot;8-bit&quot;);
+run(&quot;Threshold...&quot;);
+		setAutoThreshold(&quot;Default dark&quot;);
+        getThreshold(lower,upper);
+        setThreshold(-1024, lower);
+if (!MMp) {
+	setBatchMode(&quot;show&quot;);
+}
+
+waitForUser(&quot;Setup threshold for all but body&quot;);
+if (!MMp) {
+	setBatchMode(&quot;hide&quot;);
+}
+
+getThreshold(lowerLungs,upperLungs);
+
+</code></pre>
+<pre>
+> Start of lungs: 17
+> End of lungs: 91
+> Image directory: C:\01_projects\01_COVID_sw_tool\DATA\CT1_2\CT1_2_TIFF
+</pre>
+<p><a href="image_1667574301049.png"><img src="image_1667574301049.png" width="250" alt="orig"/></a>
+<a href="image_1667574301508.png"><img src="image_1667574301508.png" width="250" alt="lungs"/></a>
+<a href="image_1667574301910.png"><img src="image_1667574301910.png" width="250" alt="covid"/></a></p>
+<ul>
+<li>
+<h3>Making lung mask</h3>
+</li>
+</ul>
+<pre><code class="language-java">
+run(&quot;Convert to Mask&quot;, &quot;method=Default background=Light black&quot;);
+
+//run(&quot;Invert&quot;, &quot;stack&quot;); //invert
+run(&quot;Analyze Particles...&quot;, &quot;size=800-Infinity pixel circularity=0.12-1.00 show=Masks exclude clear add stack&quot;);
+run(&quot;Invert LUT&quot;);
+//run(&quot;Invert&quot;, &quot;stack&quot;); //invert
+
+run(&quot;Dilate&quot;, &quot;stack&quot;);
+run(&quot;Dilate&quot;, &quot;stack&quot;);
+run(&quot;Fill Holes&quot;, &quot;stack&quot;);
+run(&quot;Erode&quot;, &quot;stack&quot;);
+run(&quot;Erode&quot;, &quot;stack&quot;);
+//run(&quot;Invert&quot;, &quot;stack&quot;);
+run(&quot;Convert to Mask&quot;, &quot;method=Default background=Light black&quot;);
+
+// save mask
+saveAs(&quot;tiff&quot;,maskDir+replace(title,&quot;.tiff&quot;,&quot;&quot;)+&quot;_lung_mask&quot;);
+rename(&quot;mask_lungs&quot;);
+/////////////////////////
+</code></pre>
+<p><a href="image_1667574303308.png"><img src="image_1667574303308.png" width="250" alt="lungs"/></a>
+<a href="image_1667574303373.png"><img src="image_1667574303373.png" width="250" alt="mask_lungs"/></a></p>
+<ul>
+<li>
+<h2>Pneumonia/Covid masking</h2>
+</li>
+</ul>
+<pre><code class="language-java"> 
+selectImage(&quot;covid&quot;);
+run(&quot;Original Scale&quot;);
+
+// set same voxel size
+setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
+//run(&quot;8-bit&quot;);
+run(&quot;Threshold...&quot;);
+		setAutoThreshold(&quot;Default dark&quot;);
+        getThreshold(lower,upper);
+        
+
+//setThreshold(38, 126);
+if (!MMp) {
+	setBatchMode(&quot;show&quot;);
+}
+waitForUser(&quot;Setup threshold for Covid&quot;);
+if (!MMp) {
+	setBatchMode(&quot;hide&quot;);
+}
+getThreshold(lowerCov,upperCov);
+run(&quot;Convert to Mask&quot;, &quot;method=Default background=Light black&quot;);
+if (!MMp) {
+	setBatchMode(true);
+}
+run(&quot;Analyze Particles...&quot;, &quot;size=0-Infinity pixel circularity=0.00-1.00 show=Masks exclude clear add stack&quot;);
+run(&quot;Invert&quot;, &quot;stack&quot;);
+
+// get rid of small parts //needs to be optimised
+run(&quot;Dilate&quot;, &quot;stack&quot;);
+run(&quot;Dilate&quot;, &quot;stack&quot;);
+run(&quot;Erode&quot;, &quot;stack&quot;);
+run(&quot;Erode&quot;, &quot;stack&quot;);
+
+//run(&quot;Invert&quot;, &quot;stack&quot;);
+run(&quot;Invert&quot;, &quot;stack&quot;);
+run(&quot;Invert LUT&quot;);
+
+// save mask
+saveAs(&quot;tiff&quot;,maskDir+replace(title,&quot;.tiff&quot;,&quot;&quot;)+&quot;_covid_mask&quot;);
+rename(&quot;mask_covid&quot;);
+//////////////////////////////////
+
+</code></pre>
+<p><a href="image_1667574318608.png"><img src="image_1667574318608.png" width="250" alt="covid"/></a>
+<a href="image_1667574318709.png"><img src="image_1667574318709.png" width="250" alt="mask_covid"/></a></p>
+<ul>
+<li>
+<h2>Combining Pneumonia/Covid mask and Lung mask</h2>
+</li>
+</ul>
+<pre><code class="language-java">
+//get only information inside of lungs
+selectImage(&quot;mask_lungs&quot;);
+run(&quot;Original Scale&quot;);
+selectImage(&quot;mask_covid&quot;);
+setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
+imageCalculator(&quot;Multiply create stack&quot;, &quot;mask_covid&quot;,&quot;mask_lungs&quot;);
+rename(&quot;mask_covid_final&quot;);
+run(&quot;Invert LUT&quot;);
+//////////////////////////////////
+</code></pre>
+<p><a href="image_1667574319674.png"><img src="image_1667574319674.png" width="250" alt="mask_covid"/></a>
+<a href="image_1667574319748.png"><img src="image_1667574319748.png" width="250" alt="mask_covid_final"/></a></p>
+<ul>
+<li>Get Covid area</li>
+</ul>
+<pre><code class="language-java">//get covid area
+selectImage(&quot;mask_covid_final&quot;);
+//run(&quot;Analyze Particles...&quot;, &quot;pixel display exclude clear add stack&quot;);
+run(&quot;Analyze Particles...&quot;, &quot;pixel exclude clear add stack&quot;);
+
+CareaSum=0;
+CIntInt=0;
+for (i = 0; i &lt; nResults; i++) {
+	if (getResult(&quot;Area&quot;, i)&gt;-1) {
+		CareaSum=CareaSum+getResult(&quot;Area&quot;, i);
+		CIntInt=CIntInt+getResult(&quot;RawIntDen&quot;, i);
+	}
+}
+print(&quot;Covid area: &quot; + CareaSum);
+
+//////////////////////////////////
+</code></pre>
+<pre>
+> Covid area: 2546242
+</pre>
+<p><a href="image_1667574320284.png"><img src="image_1667574320284.png" width="250" alt="mask_covid_final"/></a></p>
+<ul>
+<li>Get lungs area</li>
+</ul>
+<pre><code class="language-java">//get lungs area
+selectImage(&quot;mask_lungs&quot;);
+//run(&quot;Analyze Particles...&quot;, &quot;pixel display exclude clear add stack&quot;);
+run(&quot;Analyze Particles...&quot;, &quot;pixel exclude clear add stack&quot;);
+LareaSum=0;
+LIntInt=0;
+for (i = 0; i &lt; nResults; i++) {
+	if (getResult(&quot;Area&quot;, i)&gt;-1) {
+		LareaSum=LareaSum+getResult(&quot;Area&quot;, i);
+		LIntInt=LIntInt+getResult(&quot;RawIntDen&quot;, i);
+	}
+}
+print(&quot;Lungs area: &quot; + LareaSum);
+
+selectImage(&quot;orig&quot;);
+// if original data were 16 bit, we need to convert to 8-bit
+run(&quot;8-bit&quot;);
+run(&quot;Clear Results&quot;);
+
+</code></pre>
+<pre>
+> Lungs area: 2908376
+</pre>
+<p><a href="image_1667574320717.png"><img src="image_1667574320717.png" width="250" alt="orig"/></a>
+<a href="image_1667574321123.png"><img src="image_1667574321123.png" width="250" alt="mask_lungs"/></a></p>
+<ul>
+<li>
+<h1>Visualization</h1>
+</li>
+</ul>
+<pre><code class="language-java">
+//make visualization
+run(&quot;Merge Channels...&quot;, &quot;c1=orig c2=mask_lungs c3=mask_covid_final create&quot;);
+saveAs(&quot;tiff&quot;,maskDir+replace(title,&quot;.tiff&quot;,&quot;&quot;)+&quot;_composite_results.tiff&quot;);
+
+close(&quot;\\Others&quot;);
+if (!MMp) {
+	setBatchMode(&quot;exit and display&quot;);
+}
+/////////////////////////////////
+
+</code></pre>
+<p><a href="image_1667574321866.png"><img src="image_1667574321866.png" width="250" alt="CT1_2_TIFF0000.tif_composite_results.tiff"/></a></p>
+<ul>
+<li>
+<h1>Results</h1>
+</li>
+</ul>
+<pre><code class="language-java">
+print(&quot;Results: &quot;);
+print((CareaSum/LareaSum)*100);
+print(&quot;Lung th:&quot;+lowerLungs+&quot;, &quot;+upperLungs);
+print(&quot;Covid th:&quot;+lowerCov+&quot;, &quot;+upperCov);
+percentage=(CareaSum/LareaSum)*100;
+if (isNaN(percentage)) {
+		percentage=0;
+	}
+if (percentage&lt;0) {
+		percentage=0;
+	}
+print(&quot;Voxel size, width: &quot;+Vwidth+&quot;, height: &quot;+Vheight+&quot;, depth: &quot;+Vdepth+&quot;, units: &quot;+Vunit);
+print(title + &quot; COVID percentage is: &quot; + percentage);
+print(&quot;A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, &lt; 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, &gt; 75%; range 0–5&quot;);
+print(&quot;Score is: &quot; + doScore(percentage));
+
+print(&quot;&quot;);
+print(&quot;&quot;);
+
+
+stop=getTime();
+print(&quot;Time: &quot; + (stop-start)/1000);
+selectWindow(&quot;Log&quot;);
+saveAs(&quot;Text&quot;, imgDir+replace(title,&quot;.tiff&quot;,&quot;&quot;)+&quot;_log_&quot;+acTime+&quot;.txt&quot;); 
+
+
+setBatchMode(false); //always turn off batch mode at the end
+
+
+////////////////////functions///////////////
+//score function
+function doScore(percentage) {
+	if (isNaN(percentage)) {
+		percentage=0;
+	}
+	
+	helahtyLungPerc = (0.225+4.46+3.04)/3;
+	percentage = percentage - helahtyLungPerc;
+	if (percentage&lt;0) {
+		percentage=0;
+	}
+	
+	if (percentage&lt;5) {
+		return 1;
+	}
+	if (percentage&gt;5 &amp;&amp; percentage&lt;25) {
+		return 2;
+	}
+	if (percentage&gt;25 &amp;&amp; percentage&lt;50) {
+		return 3;
+	}
+	if (percentage&gt;50 &amp;&amp; percentage&lt;75) {
+		return 4;
+	} else {
+		return 5;
+	}
+}
+
+// opening specific version of file
+function openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM) {
+	list = getFileList(input);
+	print(&quot;Opening: &quot; + input+File.separator+list[0]);
+	if (bCDICOM==true) {
+		// open compressed DICOM with Bio-Formats Importer
+		openCompressDICOMSequence(input+File.separator+list[0], list.length);
+	} else {
+			if (bDICOM==true) {
+				// open DICOM
+				openDICOMSequence(input+File.separator+list[0]);
+			} else {
+					// open TIFF
+					if (bTiff==true) {
+						openTiffSequence(input+File.separator+list[0]);
+					} else { 
+						if (bSDICOM==true) {
+							openSiemensDICOM(input);
+						} else {
+						exit(&quot;No sequence type was selected&quot;);
+						}
+					}
+				}
+			}
+			
+	rename(list[0]);
+}
+
+function openCompressDICOMSequence(filePath, numImages){
+	//run(&quot;Bio-Formats Importer&quot;, &quot;open=I:/FNKV/dataset_paper2/patient_(13)/DICOM/21092312/34180000/66305440 color_mode=Grayscale group_files rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT dimensions axis_1_number_of_images=102&quot;);
+	run(&quot;Bio-Formats Importer&quot;, &quot;open=[&quot;+filePath+&quot;] color_mode=Grayscale group_files rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT dimensions axis_1_number_of_images=&quot;+numImages);
+	run(&quot;Enhance Contrast&quot;, &quot;saturated=0.35&quot;);
+}
+function openDICOMSequence(filePath){
+	run(&quot;Image Sequence...&quot;, &quot;dir=[&quot;+filePath+&quot;] sort&quot;);}
+
+function openTiffSequence(filePath){
+	run(&quot;Image Sequence...&quot;, &quot;open=[&quot;+filePath+&quot;] sort&quot;);
+}
+
+function openSiemensDICOM(input) {
+	list = getFileList(input);
+	//list = Array.sort(list);
+	setBatchMode(true);
+	for (i = 0; i &lt; list.length; i++) {
+		open(input + File.separator + list[i]);
+	}
+	title=getTitle();
+	run(&quot;Images to Stack&quot;, &quot;name=&quot;+title+&quot; title=[] use&quot;);
+	setBatchMode(&quot;show&quot;);
+	setBatchMode(false);
+}
+</code></pre>
+<pre>
+> Results: 
+> 87.5486
+> Lung th:0, 139
+> Covid th:68, 196
+> Voxel size, width: 1, height: 1, depth: 1, units: pixels
+> CT1_2_TIFF0000.tif COVID percentage is: 87.5486
+> A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+> Score is: 5
+> 
+> 
+> Time: 1.6676E9
+</pre>
+<p><a href="image_1667574323441.png"><img src="image_1667574323441.png" width="250" alt="CT1_2_TIFF0000.tif_composite_results.tiff"/></a></p>
+
+
+
+</body></html>
