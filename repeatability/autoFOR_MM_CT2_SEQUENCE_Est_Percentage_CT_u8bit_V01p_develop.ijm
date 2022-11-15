@@ -18,7 +18,7 @@ print("Version: " + ver + ", last edit 10.11.2022");
 //Open files
 ////////////////////////////
 //#@ boolean(label = "MM protocol") MMp
-MMp=true;
+MMp=false;
 //#@ File (label = "Input directory", style = "directory") input
 input = "C:/Projekty/FNKV/reproducibility_test/CT2/CT2_DICOM";
 //#@ File (label = "Output directory", style = "directory") output
@@ -39,7 +39,17 @@ if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
 run("Bio-Formats Macro Extensions");
 Ext.getVersionNumber(version)
 print("Bio-formats version: " + version);
+print("Run workflow 10x");
+for (irun = 0; irun < 10; irun++) {
 openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
+
+start=6; // starting stack
+end=93; // starting stack
+lowerLungs=0; // lungs lower threshold
+upperLungs=113; // covid lower threshold
+lowerCov=35; // pneumonia lower threshold
+upperCov=118; // covid upper threshold
+
 
 /*
  * # Processing
@@ -50,7 +60,7 @@ title=getTitle();
 //////////////////////////
 
 
-start=getTime();
+start_time=getTime();
 
 setBatchMode("show");
 
@@ -73,10 +83,8 @@ getDimensions(width, height, channels, slices, frames);
 //select lung parts
 //waitForUser("Lung selection", "Please find start of lungs in stack");
 //start=getSliceNumber();
-start=6;
 //waitForUser("Lung selection", "Please find end of lungs in stack");
 //end=getSliceNumber();
-end=93;
 if (!MMp) setBatchMode(true);
 print("Start of lungs: "+start);
 print("End of lungs: "+end);
@@ -131,8 +139,6 @@ if (!MMp) setBatchMode("show");
 //waitForUser("Setup threshold for all but body");
 if (!MMp) setBatchMode("hide");
 //getThreshold(lowerLungs,upperLungs);
-lowerLungs=0;
-upperLungs=113;
 setThreshold(lowerLungs,upperLungs);
 
 /*
@@ -174,8 +180,6 @@ if (!MMp) setBatchMode("show");
 //waitForUser("Setup threshold for Covid");
 if (!MMp) setBatchMode("hide");
 //getThreshold(lowerCov,upperCov);
-lowerCov=35;
-upperCov=118;
 setThreshold(lowerCov,upperCov);
 run("Convert to Mask", "method=Default background=Light black");
 if (!MMp) setBatchMode(true);
@@ -281,10 +285,12 @@ print("");
 print("");
 
 
-stop=getTime();
-print("Time: " + (stop-start)/1000);
+stop_time=getTime();
+print(irun + ", Time: " + (stop_time-start_time)/1000);
 selectWindow("Log");
 saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+".txt"); 
+
+}
 
 setBatchMode(false);
 
