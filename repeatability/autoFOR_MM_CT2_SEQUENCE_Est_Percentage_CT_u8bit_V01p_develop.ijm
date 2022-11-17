@@ -15,6 +15,20 @@ print("\\Clear");
 run("Close All");
 print("Version: " + ver + ", last edit 10.11.2022");
 
+print("ImageJ version: " + IJ.getFullVersion);
+run("Bio-Formats Macro Extensions");
+Ext.getVersionNumber(version)
+print("Bio-formats version: " + version);
+
+
+if (IJ.getFullVersion!="1.53t99") {
+	print("WARNING! You are using untested ImageJ version");
+	print("\n");
+	print("This macro was created for:");
+	print("ImageJ version: 1.53t99");
+	print("Bio-formats version: 6.11.0");
+}
+
 //Open files
 ////////////////////////////
 //#@ boolean(label = "MM protocol") MMp
@@ -36,10 +50,9 @@ if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
 	exit("Only one file type can be selected");
 }
 
-run("Bio-Formats Macro Extensions");
-Ext.getVersionNumber(version)
-print("Bio-formats version: " + version);
+
 print("Run workflow 10x");
+times = newArray(0,0,0,0,0,0,0,0,0,0);
 for (irun = 0; irun < 10; irun++) {
 openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
@@ -289,11 +302,15 @@ stop_time=getTime();
 print(irun + ", Time: " + (stop_time-start_time)/1000);
 selectWindow("Log");
 saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+".txt"); 
-
+times[irun]=(stop_time-start_time)/1000;
 }
 
 setBatchMode(false);
 
+print("Times");
+for (i=0; i<times.length; i++){
+	print(times[i]);
+}
 
 ////////////////////functions///////////////
 //score function
