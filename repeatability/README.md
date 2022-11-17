@@ -11,4 +11,5 @@ The results for time are in subfolder **time_eval**.
 ![Time eval Violin plot](time_eval/time_dist_CT2.png)
 
 The results for score and percentage are in subfolder **time_eval**.
-![Score eval Violin plot](/score_dist_CT2.png)
+![Score eval Violin plot](score_eval/score_dist_CT2.png)
+![Percentage eval Violin plot](perc_eval/score_dist_CT2.png)
