@@ -54,7 +54,7 @@ if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
 
 times = newArray(0,0,0,0,0,0,0,0,0,0);
 
-openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
+
 
 start=6; // starting stack
 end=93; // starting stack
@@ -64,9 +64,10 @@ lowerCov=35; // pneumonia lower threshold
 upperCov=118; // covid upper threshold
 
 print("Pneumonia thr vs score");
-for (lowerCov = 35; lowerCov < 36; lowerCov++) {
-	//for (upperCov = lowerCov; upperCov < 255; upperCov++) {
-	for (upperCov = 118; upperCov < 119; upperCov++) {
+for (lowerCov = 0; lowerCov < 255; lowerCov=lowerCov+5) {
+	for (upperCov = lowerCov; upperCov < 255; upperCov=upperCov+5) {
+	//for (upperCov = 118; upperCov < 119; upperCov++) {
+openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
 /*
  * # Processing
@@ -117,10 +118,10 @@ getVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
 // get iamge location
 maskDir = imgDir+"masks_"+acTime+File.separator;
 if (!File.exists(maskDir))
-	File.makeDirectory(maskDir);
+	//File.makeDirectory(maskDir);
 	
-print("Image directory: "+imgDir);
-saveAs("tiff",maskDir+replace(title,".tiff","")+"_lungs_subpart");
+//print("Image directory: "+imgDir);
+//saveAs("tiff",maskDir+replace(title,".tiff","")+"_lungs_subpart");
 rename("orig");
 
 // apply median filter
@@ -176,7 +177,7 @@ run("Convert to Mask", "method=Default background=Light black");
 
 
 // save mask
-saveAs("tiff",maskDir+replace(title,".tiff","")+"_lung_mask");
+//saveAs("tiff",maskDir+replace(title,".tiff","")+"_lung_mask");
 rename("mask_lungs");
 /////////////////////////
 /*
@@ -214,7 +215,7 @@ run("Invert", "stack");
 run("Invert LUT");
 
 // save mask
-saveAs("tiff",maskDir+replace(title,".tiff","")+"_covid_mask");
+//saveAs("tiff",maskDir+replace(title,".tiff","")+"_covid_mask");
 rename("mask_covid");
 //////////////////////////////////
 /*
@@ -273,7 +274,7 @@ run("Clear Results");
  
 //make visualization
 run("Merge Channels...", "c1=orig c2=mask_lungs c3=mask_covid_final create");
-saveAs("tiff",maskDir+replace(title,".tiff","")+"_composite_results.tiff");
+//saveAs("tiff",maskDir+replace(title,".tiff","")+"_composite_results.tiff");
 
 close("\\Others");
 if (!MMp) setBatchMode("exit and display");
@@ -310,7 +311,7 @@ stop_time=getTime();
 selectWindow("Log");
 //saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+".txt"); 
 //times[irun]=(stop_time-start_time)/1000;
-
+run("Close All");
 }} //end for cycles for cov_thr
 
 setBatchMode(false);
@@ -331,9 +332,10 @@ function doScore(percentage) {
 	percentage = percentage - helahtyLungPerc;
 	if (percentage<0) {
 		percentage=0;
+		return 0;
 	}
 	
-	if (percentage<5) {
+	if (percentage>0 && percentage<5) {
 		return 1;
 	}
 	if (percentage>5 && percentage<25) {
@@ -352,7 +354,7 @@ function doScore(percentage) {
 // opening specific version of file
 function openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM) {
 	list = getFileList(input);
-	print("Opening: " + input+File.separator+list[0]);
+	//print("Opening: " + input+File.separator+list[0]);
 	if (bCDICOM==true) {
 		// open compressed DICOM with Bio-Formats Importer
 		openCompressDICOMSequence(input+File.separator+list[0], list.length);
