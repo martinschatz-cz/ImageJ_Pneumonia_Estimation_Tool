@@ -21,12 +21,12 @@ Ext.getVersionNumber(version)
 print("Bio-formats version: " + version);
 
 
-if (IJ.getFullVersion!="1.53t99") {
+if (IJ.getFullVersion!="1.52v99") {
 	print("WARNING! You are using untested ImageJ version");
 	print("\n");
 	print("This macro was created for:");
-	print("ImageJ version: 1.53t99");
-	print("Bio-formats version: 6.11.0");
+	print("ImageJ version: 1.52v99");
+	print("Bio-formats version: 6.1.1");
 }
 
 //Open files
@@ -66,8 +66,8 @@ upperCov=85; // covid upper threshold
 
 print("Pneumonia thr vs score");
 print("thL,thU,Score,th_intDen");
-for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+1) {
-	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+1) {
+for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+5) {
+	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+5) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
 openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
