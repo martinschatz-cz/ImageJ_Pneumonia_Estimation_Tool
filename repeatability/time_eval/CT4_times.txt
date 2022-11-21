@@ -1,0 +1,195 @@
+Version: 0.1p, last edit 10.11.2022
+ImageJ version: 1.52v99
+Bio-formats version: 6.1.1
+Run workflow 10x
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_8
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 24.309
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_8
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 31.791
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_9
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 26.32
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_10
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 23.087
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_10
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 21.171
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_10
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 20.847
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_11
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 18.409
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_11
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 17.73
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_12
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 14.242
+Opening: K:/FNKV/repeatability/data/CT4/CT4_DICOM\CT4_DICOM_63021648
+2022_10_21_16_12
+Start of lungs: 7
+End of lungs: 69
+Image directory: K:/FNKV/repeatability/data/CT4/CT4_DICOM
+Covid area: 415380.712
+Lungs area: 642533.975
+Results: 
+64.6473
+Lung th:0, 99
+Covid th:50, 108
+Voxel size, width: 0.6699, height: 0.6699, depth: 3, units: mm
+CT4_DICOM_63021648 COVID percentage is: 64.6473
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 4
+
+
+Time: 20.784
+Times
+24.309
+31.791
+26.32
+23.087
+21.171
+20.847
+18.409
+17.73
+14.242
+20.784

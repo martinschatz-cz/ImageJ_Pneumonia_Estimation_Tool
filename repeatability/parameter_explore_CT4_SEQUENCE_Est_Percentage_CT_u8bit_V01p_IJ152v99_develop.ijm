@@ -21,12 +21,12 @@ Ext.getVersionNumber(version)
 print("Bio-formats version: " + version);
 
 
-if (IJ.getFullVersion!="1.53t99") {
+if (IJ.getFullVersion!="1.52v99") {
 	print("WARNING! You are using untested ImageJ version");
 	print("\n");
 	print("This macro was created for:");
-	print("ImageJ version: 1.53t99");
-	print("Bio-formats version: 6.11.0");
+	print("ImageJ version: 1.52v99");
+	print("Bio-formats version: 6.1.1");
 }
 
 //Open files
@@ -35,7 +35,7 @@ if (IJ.getFullVersion!="1.53t99") {
 MMp=false;
 //#@ File (label = "Input directory", style = "directory") input
 //input = "C:/Projekty/FNKV/reproducibility_test/CT2/CT2_DICOM";
-input = "K:/FNKV/repeatability/data/CT2/CT2_DICOM";
+input = "K:/FNKV/repeatability/data/CT4/CT4_DICOM";
 //#@ File (label = "Output directory", style = "directory") output
 //#@ boolean(label = "TIF u16-bit") bTiff
 bTiff=true;
@@ -57,15 +57,15 @@ times = newArray(0,0,0,0,0,0,0,0,0,0);
 
 
 
-start=6; // starting stack
-end=93; // starting stack
+start=7; // starting stack
+end=69; // starting stack
 lowerLungs=0; // lungs lower threshold
-upperLungs=113; // covid lower threshold
-lowerCov=35; // pneumonia lower threshold
-upperCov=118; // covid upper threshold
+upperLungs=99; // covid lower threshold
+lowerCov=50; // pneumonia lower threshold
+upperCov=108; // covid upper threshold
 
 print("Pneumonia thr vs score");
-print("thL,thU,Score");
+print("thL,thU,Score,th_intDen");
 for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+1) {
 	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+1) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
@@ -301,7 +301,7 @@ if (percentage<0) {
 //print("Score is: " + doScore(percentage));
 
 
-print(lowerCov + ", " + upperCov + ", " + doScore(percentage));
+print(lowerCov + ", " + upperCov + ", " + doScore(percentage) + ", " + CIntInt);
 
 
 //print("");
