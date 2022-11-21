@@ -65,7 +65,7 @@ lowerCov=30; // pneumonia lower threshold
 upperCov=85; // covid upper threshold
 
 print("Pneumonia thr vs score");
-print("thL,thU,Score");
+print("thL,thU,Score,th_intDen");
 for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+1) {
 	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+1) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
@@ -301,7 +301,7 @@ if (percentage<0) {
 //print("Score is: " + doScore(percentage));
 
 
-print(lowerCov + ", " + upperCov + ", " + doScore(percentage));
+print(lowerCov + ", " + upperCov + ", " + doScore(percentage) + ", " + CIntInt);
 
 
 //print("");
