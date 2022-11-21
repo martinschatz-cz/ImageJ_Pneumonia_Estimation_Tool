@@ -64,6 +64,7 @@ lowerCov=35; // pneumonia lower threshold
 upperCov=118; // covid upper threshold
 
 print("Pneumonia thr vs score");
+print("thL,thU,Score,th_intDen");
 for (lowerCov = 0; lowerCov < 255; lowerCov=lowerCov+5) {
 	for (upperCov = lowerCov; upperCov < 255; upperCov=upperCov+5) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
@@ -299,7 +300,7 @@ if (percentage<0) {
 //print("A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5");
 //print("Score is: " + doScore(percentage));
 
-print(lowerCov + ", " + upperCov + ", " + doScore(percentage));
+print(lowerCov + ", " + upperCov + ", " + doScore(percentage) + ", " + CIntInt);
 
 
 //print("");

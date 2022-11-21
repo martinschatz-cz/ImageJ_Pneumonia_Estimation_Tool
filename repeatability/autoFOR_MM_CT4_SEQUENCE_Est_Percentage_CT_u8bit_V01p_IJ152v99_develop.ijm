@@ -38,12 +38,12 @@ MMp=false;
 input = "K:/FNKV/repeatability/data/CT4/CT4_DICOM";
 //#@ File (label = "Output directory", style = "directory") output
 //#@ boolean(label = "TIF u16-bit") bTiff
-bTiff=true;
+bTiff=false;
 //#@ boolean(label = "DICOM u16-bit") bDICOM
 //#@ boolean(label = "Siemens DICOM") bSDICOM
 //#@ boolean(label = "Compressed Dicom") bCDICOM
 bDICOM = false;
-bSDICOM = false;
+bSDICOM = true;
 bCDICOM = false;
 
 if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
@@ -52,24 +52,18 @@ if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
 }
 
 
-
+print("Run workflow 10x");
 times = newArray(0,0,0,0,0,0,0,0,0,0);
-
-
+for (irun = 0; irun < 10; irun++) {
+openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
 start=7; // starting stack
 end=69; // starting stack
 lowerLungs=0; // lungs lower threshold
-upperLungs=77; // covid lower threshold
-lowerCov=30; // pneumonia lower threshold
-upperCov=85; // covid upper threshold
+upperLungs=99; // covid lower threshold
+lowerCov=50; // pneumonia lower threshold
+upperCov=108; // covid upper threshold
 
-print("Pneumonia thr vs score");
-print("thL,thU,Score,th_intDen");
-for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+5) {
-	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+5) {
-	//for (upperCov = 118; upperCov < 119; upperCov++) {
-openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
 /*
  * # Processing
@@ -88,7 +82,7 @@ imgDir = input;
 getDateAndTime(year, month, dayOfWeek, dayOfMonth, hour, minute, second, msec);
 acTime="";
 acTime = "" + year + "_" + month + "_" + dayOfMonth + "_" + hour + "_" + minute + "";
-//print(acTime);
+print(acTime);
 
 dirArray=split(imgDir, File.separator());
 dirName=dirArray[dirArray.length-1];
@@ -102,8 +96,8 @@ start=getSliceNumber();
 waitForUser("Lung selection", "Please find end of lungs in stack");
 end=getSliceNumber();*/
 setBatchMode(true);
-//print("Start of lungs: "+start);
-//print("End of lungs: "+end);
+print("Start of lungs: "+start);
+print("End of lungs: "+end);
 run("Duplicate...", "duplicate range="+start+"-"+end);
 rename("orig");
 selectImage(title);
@@ -114,12 +108,12 @@ selectImage("orig");
 getVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
 
 // get iamge location
-/*maskDir = imgDir+"masks_"+acTime+File.separator;
+maskDir = imgDir+"masks_"+acTime+File.separator;
 if (!File.exists(maskDir))
-	File.makeDirectory(maskDir);*/
+	File.makeDirectory(maskDir);
 	
-//print("Image directory: "+imgDir);
-//saveAs("tiff",maskDir+replace(title,".tiff","")+"_lungs_subpart");
+print("Image directory: "+imgDir);
+saveAs("tiff",maskDir+replace(title,".tiff","")+"_lungs_subpart");
 rename("orig");
 
 // apply median filter
@@ -181,7 +175,7 @@ if (IJ.getFullVersion!="1.52v99") {
 }
 
 // save mask
-//saveAs("tiff",maskDir+replace(title,".tiff","")+"_lung_mask");
+saveAs("tiff",maskDir+replace(title,".tiff","")+"_lung_mask");
 rename("mask_lungs");
 /////////////////////////
 selectImage("covid");
@@ -229,7 +223,7 @@ if (IJ.getFullVersion!="1.52v99") {
 }
 
 // save mask
-//saveAs("tiff",maskDir+replace(title,".tiff","")+"_covid_mask");
+saveAs("tiff",maskDir+replace(title,".tiff","")+"_covid_mask");
 rename("mask_covid");
 //////////////////////////////////
 //get only information inside of lungs
@@ -255,7 +249,7 @@ for (i = 0; i < nResults; i++) {
 		CIntInt=CIntInt+getResult("RawIntDen", i);
 	}
 }
-//print("Covid area: " + CareaSum);
+print("Covid area: " + CareaSum);
 
 //////////////////////////////////
 //get lungs area
@@ -269,7 +263,7 @@ for (i = 0; i < nResults; i++) {
 		LIntInt=LIntInt+getResult("RawIntDen", i);
 	}
 }
-//print("Lungs area: " + LareaSum);
+print("Lungs area: " + LareaSum);
 
 selectImage("orig");
 // if original data were 16 bit, we need to convert to 8-bit
@@ -278,16 +272,16 @@ run("Clear Results");
 
 //make visualization
 run("Merge Channels...", "c1=orig c2=mask_lungs c3=mask_covid_final create");
-//saveAs("tiff",maskDir+replace(title,".tiff","")+"_composite_results.tiff");
+saveAs("tiff",maskDir+replace(title,".tiff","")+"_composite_results.tiff");
 
 close("\\Others");
 setBatchMode("exit and display");
 
 /////////////////////////////////
-//print("Results: ");
-//print((CareaSum/LareaSum)*100);
-//print("Lung th:"+lowerLungs+", "+upperLungs);
-//print("Covid th:"+lowerCov+", "+upperCov);
+print("Results: ");
+print((CareaSum/LareaSum)*100);
+print("Lung th:"+lowerLungs+", "+upperLungs);
+print("Covid th:"+lowerCov+", "+upperCov);
 percentage=(CareaSum/LareaSum)*100;
 if (isNaN(percentage)) {
 		percentage=0;
@@ -295,34 +289,29 @@ if (isNaN(percentage)) {
 if (percentage<0) {
 		percentage=0;
 	}
-//print("Voxel size, width: "+Vwidth+", height: "+Vheight+", depth: "+Vdepth+", units: "+Vunit);
-//print(title + " COVID percentage is: " + percentage);
-//print("A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5");
-//print("Score is: " + doScore(percentage));
+print("Voxel size, width: "+Vwidth+", height: "+Vheight+", depth: "+Vdepth+", units: "+Vunit);
+print(title + " COVID percentage is: " + percentage);
+print("A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5");
+print("Score is: " + doScore(percentage));
 
-
-print(lowerCov + ", " + upperCov + ", " + doScore(percentage) + ", " + CIntInt);
-
-
-//print("");
-//print("");
+print("");
+print("");
 
 
 stop_time=getTime();
-//print(irun + ", Time: " + (stop_time-start_time)/1000);
+print("Time: " + (stop_time-start_time)/1000);
 selectWindow("Log");
-//saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+".txt"); 
-//times[irun]=(stop_time-start_time)/1000;
-run("Close All");
-}} //end for cycles for cov_thr
+saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+".txt"); 
+times[irun]=(stop_time-start_time)/1000;
+}
 
 setBatchMode(false);
 
-/*print("Times");
+print("Times");
 for (i=0; i<times.length; i++){
 	print(times[i]);
 }
-*/
+
 ////////////////////functions///////////////
 //score function
 function doScore(percentage) {
@@ -337,7 +326,7 @@ function doScore(percentage) {
 		return 0;
 	}
 	
-	if (percentage>0 && percentage<5) {
+	if (percentage<5) {
 		return 1;
 	}
 	if (percentage>5 && percentage<25) {
@@ -356,7 +345,7 @@ function doScore(percentage) {
 // opening specific version of file
 function openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM) {
 	list = getFileList(input);
-	//print("Opening: " + input+File.separator+list[0]);
+	print("Opening: " + input+File.separator+list[0]);
 	if (bCDICOM==true) {
 		// open compressed DICOM with Bio-Formats Importer
 		openCompressDICOMSequence(input+File.separator+list[0], list.length);

@@ -35,7 +35,7 @@ if (IJ.getFullVersion!="1.52v99") {
 MMp=false;
 //#@ File (label = "Input directory", style = "directory") input
 //input = "C:/Projekty/FNKV/reproducibility_test/CT2/CT2_DICOM";
-input = "K:/FNKV/repeatability/data/CT4/CT4_DICOM";
+input = "K:/FNKV/repeatability/data/CT2/CT2_DICOM";
 //#@ File (label = "Output directory", style = "directory") output
 //#@ boolean(label = "TIF u16-bit") bTiff
 bTiff=true;
@@ -57,12 +57,12 @@ times = newArray(0,0,0,0,0,0,0,0,0,0);
 
 
 
-start=7; // starting stack
-end=69; // starting stack
+start=6; // starting stack
+end=93; // starting stack
 lowerLungs=0; // lungs lower threshold
-upperLungs=77; // covid lower threshold
-lowerCov=30; // pneumonia lower threshold
-upperCov=85; // covid upper threshold
+upperLungs=113; // covid lower threshold
+lowerCov=35; // pneumonia lower threshold
+upperCov=118; // covid upper threshold
 
 print("Pneumonia thr vs score");
 print("thL,thU,Score,th_intDen");
