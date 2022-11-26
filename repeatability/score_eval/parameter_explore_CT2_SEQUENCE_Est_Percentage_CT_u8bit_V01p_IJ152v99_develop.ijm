@@ -64,6 +64,8 @@ upperLungs=113; // covid lower threshold
 lowerCov=35; // pneumonia lower threshold
 upperCov=118; // covid upper threshold
 
+print(input);
+
 print("Pneumonia thr vs score");
 print("thL,thU,Score,th_intDen");
 for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+5) {

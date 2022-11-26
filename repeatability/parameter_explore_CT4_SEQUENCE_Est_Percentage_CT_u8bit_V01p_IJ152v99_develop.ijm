@@ -64,10 +64,12 @@ upperLungs=99; // covid lower threshold
 lowerCov=50; // pneumonia lower threshold
 upperCov=108; // covid upper threshold
 
+print(input);
+
 print("Pneumonia thr vs score");
 print("thL,thU,Score,th_intDen");
-for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+1) {
-	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+1) {
+for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+5) {
+	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+5) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
 openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
