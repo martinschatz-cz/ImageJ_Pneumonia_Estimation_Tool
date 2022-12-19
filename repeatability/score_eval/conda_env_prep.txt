@@ -1,0 +1,5 @@
+conda install mamba -c conda-forge
+mamba create --name julab python=3.9 
+conda activate julab
+mamba install -c conda-forge jupyterlab
+conda install seaborn -c conda-forge
