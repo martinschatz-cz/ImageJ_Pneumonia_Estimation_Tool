@@ -1,4 +1,4 @@
-//	V 0.3clean
+//	V 0.4-a
 ver = "0.4"
 //  update: 21.11.2022
 //	by: Martin Schätz
