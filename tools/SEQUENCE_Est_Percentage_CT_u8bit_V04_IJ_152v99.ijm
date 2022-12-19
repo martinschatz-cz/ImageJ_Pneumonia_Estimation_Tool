@@ -17,12 +17,12 @@ Ext.getVersionNumber(version)
 print("Bio-formats version: " + version);
 
 
-if (IJ.getFullVersion!="1.53t99") {
+if (IJ.getFullVersion!="1.52v99") {
 	print("WARNING! You are using untested ImageJ version");
 	print("\n");
 	print("This macro was created for:");
-	print("ImageJ version: 1.53t99");
-	print("Bio-formats version: 6.11.0");
+	print("ImageJ version: 1.52v99");
+	print("Bio-formats version: 6.3.1-SNAPSHOT");
 }
 
 //Open files
@@ -126,14 +126,25 @@ run("Convert to Mask", "method=Default background=Light black");
 
 run("Analyze Particles...", "size=800-Infinity pixel circularity=0.12-1.00 show=Masks display exclude clear add stack");
 
-run("Dilate", "stack");
-run("Dilate", "stack");
-run("Fill Holes", "stack");
-run("Erode", "stack");
-run("Erode", "stack");
-run("Invert", "stack");
-run("Convert to Mask", "method=Default background=Light black");
-
+if (IJ.getFullVersion!="1.52v99") {
+	run("Dilate", "stack");
+	run("Dilate", "stack");
+	run("Fill Holes", "stack");
+	run("Erode", "stack");
+	run("Erode", "stack");
+	run("Invert", "stack");
+	run("Convert to Mask", "method=Default background=Light black");
+} else {
+	run("Invert LUT");
+	//run("Invert", "stack");
+	run("Dilate", "stack");
+	run("Dilate", "stack");
+	run("Fill Holes", "stack");
+	run("Erode", "stack");
+	run("Erode", "stack");
+	run("Invert", "stack");
+	run("Convert to Mask", "method=Default background=Light black");
+}
 
 // save mask
 saveAs("tiff",maskDir+replace(title,".tiff","")+"_lung_mask");
@@ -157,30 +168,45 @@ getThreshold(lowerCov,upperCov);
 run("Convert to Mask", "method=Default background=Light black");
 setBatchMode(true);
 run("Analyze Particles...", "size=0-Infinity pixel circularity=0.00-1.00 show=Masks display exclude clear add stack");
-run("Invert", "stack");
+
 
 // get rid of small parts //needs to be optimised
-run("Dilate", "stack");
-run("Dilate", "stack");
-run("Erode", "stack");
-run("Erode", "stack");
-
-//run("Invert", "stack");
-run("Invert", "stack");
-run("Invert LUT");
+if (IJ.getFullVersion!="1.52v99") {
+	run("Invert", "stack");
+	run("Dilate", "stack");
+	run("Dilate", "stack");
+	run("Erode", "stack");
+	run("Erode", "stack");
+	
+	//run("Invert", "stack");
+	run("Invert", "stack");
+	run("Invert LUT");
+} else {
+	run("Invert LUT");
+	run("Erode", "stack");
+	run("Erode", "stack");
+	run("Dilate", "stack");
+	run("Dilate", "stack");
+	
+	//run("Invert", "stack");
+	//run("Invert", "stack");
+	//run("Invert LUT");
+}
 
 // save mask
 saveAs("tiff",maskDir+replace(title,".tiff","")+"_covid_mask");
 rename("mask_covid");
 //////////////////////////////////
 //get only information inside of lungs
-selectImage("mask_lungs");
+selectImage("mask_lungs"); 
 run("Original Scale");
 selectImage("mask_covid");
 setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
 imageCalculator("Multiply create stack", "mask_covid","mask_lungs");
 rename("mask_covid_final");
-run("Invert LUT");
+if (IJ.getFullVersion!="1.52v99") {
+	run("Invert LUT");
+}
 //////////////////////////////////
 //get covid area
 selectImage("mask_covid_final");
@@ -213,7 +239,6 @@ selectImage("orig");
 // if original data were 16 bit, we need to convert to 8-bit
 run("8-bit");
 run("Clear Results");
-
 
 //make visualization
 run("Merge Channels...", "c1=orig c2=mask_lungs c3=mask_covid_final create");
