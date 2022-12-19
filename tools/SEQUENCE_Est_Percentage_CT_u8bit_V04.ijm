@@ -260,8 +260,9 @@ function doScore(percentage) {
 	
 	helahtyLungPerc = (0.225+4.46+3.04)/3;
 	percentage = percentage - helahtyLungPerc;
-	if (percentage<0) {
+	if (percentage<=0) {
 		percentage=0;
+		return 0;
 	}
 	
 	if (percentage<5) {
