@@ -130,10 +130,6 @@ if (bone){
 run("Median...", "radius=2 stack");
 selectImage("orig");
 
-// enhance contrast for better details
-run("Enhance Contrast", "saturated=0.35");
-run("Apply LUT", "stack");
-
 // duplicate stack for lung thresholding
 run("Duplicate...", "duplicate");
 rename("lungs");
