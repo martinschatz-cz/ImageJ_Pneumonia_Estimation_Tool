@@ -21,11 +21,11 @@ Ext.getVersionNumber(version)
 print("Bio-formats version: " + version);
 
 
-if (IJ.getFullVersion!="1.52t99") {
-	print("WARNING! You are using untested ImageJ version");
+if (IJ.getFullVersion!="1.53t99") {
+	print("WARNING! You might be using untested ImageJ version");
 	print("\n");
 	print("This macro was created for:");
-	print("ImageJ version: 1.53t99");
+	print("ImageJ version: 1.52t99");
 	print("Bio-formats version: 6.11.0");
 }
 
@@ -38,12 +38,12 @@ MMp=false;
 input = "K:/FNKV/repeatability/data/CT2/CT2_DICOM";
 //#@ File (label = "Output directory", style = "directory") output
 //#@ boolean(label = "TIF u16-bit") bTiff
-bTiff=true;
+bTiff=false;
 //#@ boolean(label = "DICOM u16-bit") bDICOM
 //#@ boolean(label = "Siemens DICOM") bSDICOM
 //#@ boolean(label = "Compressed Dicom") bCDICOM
 bDICOM = false;
-bSDICOM = false;
+bSDICOM = true; //Siemens DICOM
 bCDICOM = false;
 
 if ((bTiff & bDICOM) | (bDICOM & bCDICOM) | (bCDICOM & bTiff)) {
@@ -59,15 +59,15 @@ times = newArray(0,0,0,0,0,0,0,0,0,0);
 
 start=6; // starting stack
 end=93; // starting stack
-lowerLungs=0; // lungs lower threshold
-upperLungs=113; // covid lower threshold
-lowerCov=35; // pneumonia lower threshold
-upperCov=118; // covid upper threshold
+lowerLungs=-1024; // lungs lower threshold
+upperLungs=24000; // lungs lower threshold
+lowerCovs=2500; // pneumonia lower threshold
+upperCov=21000; // pneumonia upper threshold
 
 print("Pneumonia thr vs score");
-print("thL,thU,Score");
-for (lowerCov = 0; lowerCov < upperLungs; lowerCov=lowerCov+1) {
-	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+1) {
+print("thL,thU,Score,percentage");
+for (lowerCov = lowerCovs; lowerCov < upperLungs; lowerCov=lowerCov+500) {
+	for (upperCov = lowerCov; upperCov < upperLungs; upperCov=upperCov+500) {
 	//for (upperCov = 118; upperCov < 119; upperCov++) {
 openSequenceFolder(input,bCDICOM,bDICOM,bTiff,bSDICOM);
 
@@ -126,10 +126,6 @@ rename("orig");
 run("Median...", "radius=2 stack");
 selectImage("orig");
 
-// enhance contrast for better details
-run("Enhance Contrast", "saturated=0.35");
-run("Apply LUT", "stack");
-
 // duplicate stack for lung thresholding
 run("Duplicate...", "duplicate");
 rename("lungs");
@@ -146,14 +142,14 @@ run("Original Scale");
 
 // set same voxel size
 setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
-run("8-bit");
+//run("8-bit");
 run("Threshold...");
 		setAutoThreshold("Default dark");
         getThreshold(lower,upper);
         setThreshold(0, lower);
-setBatchMode("show");
+//setBatchMode("show");
 //waitForUser("Setup threshold for all but body");
-setBatchMode("hide");
+//setBatchMode("hide");
 setThreshold(lowerLungs,upperLungs);
 
 run("Convert to Mask", "method=Default background=Light black");
@@ -189,15 +185,15 @@ run("Original Scale");
 
 // set same voxel size
 setVoxelSize(Vwidth, Vheight, Vdepth, Vunit);
-run("8-bit");
+//run("8-bit");
 run("Threshold...");
 		setAutoThreshold("Default dark");
         getThreshold(lower,upper);
 
 setThreshold(38, 126);
-setBatchMode("show");
+//setBatchMode("show");
 //waitForUser("Setup threshold for Covid");
-setBatchMode("hide");
+//setBatchMode("hide");
 setThreshold(lowerCov,upperCov);
 run("Convert to Mask", "method=Default background=Light black");
 setBatchMode(true);
@@ -301,7 +297,7 @@ if (percentage<0) {
 //print("Score is: " + doScore(percentage));
 
 
-print(lowerCov + ", " + upperCov + ", " + doScore(percentage));
+print(lowerCov + ", " + upperCov + ", " + doScore(percentage) + ", " + percentage);
 
 
 //print("");
@@ -317,6 +313,10 @@ run("Close All");
 }} //end for cycles for cov_thr
 
 setBatchMode(false);
+
+selectWindow("Log");
+saveAs("Text", imgDir+replace(title,".tiff","")+"_log_"+acTime+"_parExplore.txt"); 
+
 
 /*print("Times");
 for (i=0; i<times.length; i++){

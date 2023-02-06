@@ -18,7 +18,7 @@ print("Bio-formats version: " + version);
 
 
 if (IJ.getFullVersion!="1.52v99") {
-	print("WARNING! You are using untested ImageJ version");
+	print("WARNING! You might be using untested ImageJ version");
 	print("\n");
 	print("This macro was created for:");
 	print("ImageJ version: 1.52v99");
