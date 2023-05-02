@@ -1,4 +1,4 @@
-[![F1000research - Software Tool](https://img.shields.io/badge/F1000research-Software_Tool-ed5d1f)](https://doi.org/10.12688/f1000research.109020.1) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5805990.svg)](https://doi.org/10.5281/zenodo.5805990)
+[![F1000research - Software Tool](https://img.shields.io/badge/F1000research-Software_Tool-ed5d1f)](https://doi.org/10.12688/f1000research.109020.1) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7885379.svg)](https://doi.org/10.5281/zenodo.7885379)
 
 # ImageJ Pneumonia Estimation Tool
 
