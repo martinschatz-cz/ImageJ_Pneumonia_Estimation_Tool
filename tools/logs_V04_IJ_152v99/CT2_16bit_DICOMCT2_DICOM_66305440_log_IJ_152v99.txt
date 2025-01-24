@@ -1,0 +1,21 @@
+Version: 0.4, last edit 21.11.2022
+ImageJ version: 1.52v99
+Bio-formats version: 6.1.1
+Opening: K:\FNKV\repeatability\data\CT2\CT2_DICOM\CT2_DICOM_66305440
+2022_11_22_12_5
+Start of lungs: 6
+End of lungs: 93
+Image directory: K:\FNKV\repeatability\data\CT2\CT2_DICOM
+Covid area: 245335.504
+Lungs area: 2097153.17
+Results: 
+11.6985
+Lung th:-1024, 23648
+Covid th:6686, 24419
+Voxel size, width: 0.7461, height: 0.7461, depth: 3, units: mm
+CT2_DICOM_66305440 COVID percentage is: 11.6985
+A semi-quantitative CT score was calculated based on the extent oflobar involvement (0:0%; 1, < 5%; 2:5–25%; 3:26–50%; 4:51–75%; 5, > 75%; range 0–5
+Score is: 2
+
+
+Time: 81.561

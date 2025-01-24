@@ -1,4 +1,4 @@
-//	V 0.3clean
+//	V 0.4-a
 ver = "0.4"
 //  update: 21.11.2022
 //	by: Martin Schätz
@@ -129,10 +129,6 @@ if (bone){
 // apply median filter
 run("Median...", "radius=2 stack");
 selectImage("orig");
-
-// enhance contrast for better details
-run("Enhance Contrast", "saturated=0.35");
-run("Apply LUT", "stack");
 
 // duplicate stack for lung thresholding
 run("Duplicate...", "duplicate");
